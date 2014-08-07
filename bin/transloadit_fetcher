@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+require File.expand_path(File.dirname(__FILE__) + '/../lib/transloadit_fetcher.rb')
+require 'trollop'
+
+opts = Trollop::options do
+  opt :loop, "Run continuously", default: false
+end
+
+if ARGV[0].nil? || ARGV[1].nil? || ARGV[2].nil?
+  puts <<-EOS
+Error: Missing parameters
+
+Usage:
+
+  transloadit_fetcher [options] <api_key> <api_secret> <post_url>
+
+EOS
+  exit 1
+end
+
+begin
+  @tf = TransloaditFetcher.new(ARGV[0], ARGV[1], ARGV[2])
+  if opts[:loop]
+    loop do
+      puts "Checking for new assemblies"
+      @since = @tf.fetch_and_post_assemblies(@since)
+      sleep 60
+    end
+  else
+    @tf.fetch_and_post_assemblies(@since)
+  end
+rescue SystemExit, Interrupt
+  puts "Quitting..."
+  exit 0
+rescue TransloaditFetcherError
+  exit 1
+rescue Exception => e
+  puts e.class
+  puts e.message
+  puts e.backtrace
+  exit 1
+end
