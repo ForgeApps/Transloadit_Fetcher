@@ -5,6 +5,8 @@ In order to simulate the notification process you must visit your Transloadit da
 
 It checks for new assemblies every minute, only fetching ones created since it last found any assemblies. It pulls these down, and performs a POST to a URL of your choosing that emulates the Transloadit assembly notification.
 
+The current version is **0.0.2**
+
 # Installation
 
 In your gemfile:
@@ -23,13 +25,14 @@ Find your API Key and Secret here: https://transloadit.com/accounts/credentials
 
 The `-l` tells it to loop and check every 1 minute.
 
-
-If you'd like you may run `bundle install --binstubs` and then run transloadit_fetcher with
-
-`bin/transloadit_fetcher -l my_api_key my_api_secret http://127.0.0.1:3000`
-
 #### ToDo:
 
 * Improve handling of first fetch. It probably should just fetch all assemblies that were created in the last minute
 * Add some better output depending on the response code of the HTTP POST.
 * General Code cleanup
+
+
+#### Changelog:
+0.0.2 - Fix bug causing `since` parameter to be lost.
+
+0.0.1 - Initial release
