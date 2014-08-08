@@ -19,7 +19,7 @@ class TransloaditFetcher
     end
     assemblies = request_assembly_list( {since: since, page_size: page_size} )
     
-    latest_time = nil
+    latest_time = since
     
     assemblies.each do |assembly|
       created_time = Time.parse(assembly["created"])
